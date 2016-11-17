@@ -1,4 +1,7 @@
-﻿var CACHE_NAME = 'my-site-cache-v1';
+﻿//When the service worker is updated, I need to increment this guy
+//or hash or somewhere or something.
+//Then the activate function will invalidate old caches when the server worker is updated.
+var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
   '/Content/css/bootstrap.min.css',
   '/Content/css/freelancer.min.css',
@@ -58,4 +61,22 @@ self.addEventListener('fetch', function(event) {
         );
       })
     );
+});
+
+//remove old caches if they don't match the cache name 
+//Though depending on the site, we may or may not want to invalidate
+//certain items that will never change.
+self.addEventListener('activate', function(e) {
+  console.log('ServiceWorker Activate');
+  e.waitUntil(
+    caches.keys().then(function(keyList) {
+      return Promise.all(keyList.map(function(key) {
+        if (key !== CACHE_NAME) {
+          console.log('ServiceWorker removing old cache', key);
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+  return self.clients.claim();
 });

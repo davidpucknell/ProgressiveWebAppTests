@@ -139,6 +139,7 @@
     <None Include="Content\css\bootstrap.min.css.map" />
     <None Include="Content\css\bootstrap-theme.css.map" />
     <None Include="Content\css\bootstrap-theme.min.css.map" />
+    <None Include="manifest.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
